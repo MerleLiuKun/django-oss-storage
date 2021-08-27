@@ -67,7 +67,7 @@ class OssStorage(Storage):
         cname = _get_config('OSS_BUCKET_CNAME')
         if cname:
             is_cname = True
-            self.bucket_name = cname
+            self.end_point = cname
 
         self.auth = Auth(self.access_key_id, self.access_key_secret)
         self.service = Service(self.auth, self.end_point)
