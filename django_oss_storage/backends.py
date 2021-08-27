@@ -63,9 +63,15 @@ class OssStorage(Storage):
         self.bucket_name = bucket_name if bucket_name else _get_config('OSS_BUCKET_NAME')
         self.expire_time = expire_time if expire_time else int(_get_config('OSS_EXPIRE_TIME', default=60*60*24*30))
 
+        is_cname = False
+        cname = _get_config('OSS_BUCKET_CNAME')
+        if cname:
+            is_cname = True
+            self.bucket_name = cname
+
         self.auth = Auth(self.access_key_id, self.access_key_secret)
         self.service = Service(self.auth, self.end_point)
-        self.bucket = Bucket(self.auth, self.end_point, self.bucket_name)
+        self.bucket = Bucket(self.auth, self.end_point, self.bucket_name, is_cname=is_cname)
 
         # try to get bucket acl to check bucket exist or not
         try:
