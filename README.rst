@@ -91,6 +91,13 @@ and upload to STATIC_URL.
 
     $ python manage.py collectstatic
 
+CDN settings
+============
+
+.. code-block:: bash
+
+    # SET CDN domin
+    OSS_BUCKET_CDN_DOMAIN = "https://example.com"
 
 Testing
 =======
