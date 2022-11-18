@@ -125,8 +125,16 @@ class OssStorage(Storage):
         target_name = self._get_key_name(name)
         logger().debug("target name: %s", target_name)
         logger().debug("content: %s", content)
-        self.bucket.put_object(target_name, content)
-        return os.path.normpath(name)
+
+        try:
+            for idx in range(3):
+                resp = self.bucket.put_object(target_name, content)
+                print(f"Put {name}: request_id: {resp.request_id}, status: {resp.status}, times: {idx}")
+                if resp.status == 200:
+                    return os.path.normpath(name)
+        except Exception as e:
+            print(f"Save name for {name}, errors: {e}")
+        return ""
 
     def create_dir(self, dirname):
         target_name = self._get_key_name(dirname)
